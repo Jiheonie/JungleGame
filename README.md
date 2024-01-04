@@ -1,4 +1,4 @@
-#Jungle Game
+# Jungle Game
 
 Run bot-v-bot mode:
-'python bot_v_bot.py'
+`python bot_v_bot.py`
