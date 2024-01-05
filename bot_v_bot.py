@@ -27,7 +27,7 @@ def main():
       print_move(game.next_player, bot_move)
       game = game.apply_move(bot_move)
       
-  print(("green" if game.next_player == Player.RED else "red") + " win")
+  print(game.winner)
 
 if __name__ == '__main__':
   main()

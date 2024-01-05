@@ -80,10 +80,6 @@ class Board():
       assert placed_chessman.player != player, "ally has already been here"
       dest_power = placed_chessman.chesstype.value if hasattr(placed_chessman.chesstype, 'value') else 0
       prev_power = chessman.chesstype.value if hasattr(chessman.chesstype, 'value') else 0
-      print(dest_power)
-      print(placed_chessman.lost_power)
-      print(prev_power)
-      print(chessman.lost_power)
       assert (dest_power <= prev_power) ^ (dest_power == 8 and prev_power == 1), "can't catch"
 
     if prev_square.area == Area.TRAP and chessman.player != prev_square.player:
@@ -105,6 +101,7 @@ class GameState():
     self.next_player = next_player
     self.previous_state = previous
     self.last_move = move
+    self.winner = None
 
   def __eq__(self, __value: object) -> bool:
     return self.__dict__ == __value.__dict__
@@ -126,8 +123,12 @@ class GameState():
     if self.last_move is None:
       return False
     if self.last_move.is_resign:
+      self.winner = self.next_player  
       return True
     second_last_move = self.previous_state.last_move
     if second_last_move is None:
       return False
-    return self.board.is_over == True
+    if self.board.is_over:
+      self.winner = self.next_player.other
+      return True
+    return False
