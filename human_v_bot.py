@@ -9,6 +9,7 @@ def main():
 
   game = jungleBoard.GameState.new_game()
   custom_board(game.board)
+  game.set_legal_moves()
   bot = agent.naive.RandomBot()
 
   while not game.is_over():

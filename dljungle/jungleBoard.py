@@ -1,5 +1,6 @@
 import copy
 from dljungle.jungleTypes import Player, ChessType, Area, Square
+from dljungle.agent.helpers import is_move_valid
 
 class Move():
   def __init__(self, prev_square=None, direction=None, is_resign=False):
@@ -16,6 +17,11 @@ class Move():
   @classmethod
   def resign(cls):
     return Move(is_resign=True)
+
+  def __eq__(self, other):
+    if isinstance(other, Move):
+      return self.__dict__ == other.__dict__
+    return False
   
 
 class Board():
@@ -102,6 +108,7 @@ class GameState():
     self.previous_state = previous
     self.last_move = move
     self.winner = None
+    self.legal_moves = self.get_legal_moves()
 
   def __eq__(self, __value: object) -> bool:
     return self.__dict__ == __value.__dict__
@@ -113,10 +120,20 @@ class GameState():
     else:
       next_board = self.board
     return GameState(next_board, self.next_player.other, self, move)
+
+  def get_legal_moves(self):
+    keys_lst = list(self.board.get_grid().keys())
+    directions_lst = ["bot", "top", "left", "right"]
+    candidates = []
+    for square in keys_lst:
+      for direction in directions_lst:
+        candidate = [square, direction]
+        if is_move_valid(self.next_player, self.board, square, direction):
+          candidates.append(Move.play(candidate[0], candidate[1]))
+    return candidates
   
   @classmethod
-  def new_game(cls):
-    board = Board()
+  def new_game(cls, board):
     return GameState(board, Player.GREEN, None, None)
   
   def is_over(self):

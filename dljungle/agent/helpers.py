@@ -25,7 +25,7 @@ def is_move_valid(player, board, prev_square, direction):
     # can't catch higher power
     dest_power = dest_chessman.chesstype.value if hasattr(dest_chessman.chesstype, 'value') else 0
     prev_power = chessman.chesstype.value if hasattr(chessman.chesstype, 'value') else 0
-    if dest_power == 8 and prev_power == 1:
+    if dest_power == ChessType.ELEPHANT and prev_power == ChessType.RAT:
       return True
     if dest_power > prev_power:
       return False
@@ -38,6 +38,5 @@ def is_move_valid(player, board, prev_square, direction):
   # can't move to own cave
   if dest_square.area == Area.CAVE and dest_square.player == player:
     return False
-
-
   return True
+

@@ -73,3 +73,8 @@ class ChessMan():
     self.player = player
     self.chesstype = chesstype
     self.lost_power = chesstype
+
+
+class GameResult(Enum):
+  LOSS = 0
+  WIN = 1
