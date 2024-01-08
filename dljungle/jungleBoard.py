@@ -1,6 +1,6 @@
 import copy
 from dljungle.jungleTypes import Player, ChessType, Area, Square
-from dljungle.agent.helpers import is_move_valid
+from dljungle.agent.helpers import is_move_valid, is_winning_move
 
 class Move():
   def __init__(self, prev_square=None, direction=None, is_resign=False):
@@ -100,6 +100,14 @@ class Board():
     self._grid[dest_square] = chessman
     self._grid[prev_square] = None
   
+  def get_checkmate(self):
+    for square in self._grid:
+      if square.area == Area.TRAP:
+        chessman = self.get_chess_by_square(square)
+        if chessman.player != square.player:
+          return square
+    return None
+
   
 class GameState():
   def __init__(self, board, next_player, previous, move):
@@ -108,6 +116,7 @@ class GameState():
     self.previous_state = previous
     self.last_move = move
     self.winner = None
+    self.winning_moves = []
     self.legal_moves = self.get_legal_moves()
 
   def __eq__(self, __value: object) -> bool:
@@ -130,6 +139,8 @@ class GameState():
         candidate = [square, direction]
         if is_move_valid(self.next_player, self.board, square, direction):
           candidates.append(Move.play(candidate[0], candidate[1]))
+          if is_winning_move(self, candidate[0], candidate[1]):
+            self.winning_moves.append(candidate)
     return candidates
   
   @classmethod

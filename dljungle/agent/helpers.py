@@ -40,3 +40,11 @@ def is_move_valid(player, board, prev_square, direction):
     return False
   return True
 
+def is_winning_move(game_state, square, direction):
+  dest_square = game_state.board.get_dest_square(square, direction)
+  chessman = game_state.board.get_chess_by_square(square)
+  if dest_square.area == Area.CAVE \
+    and game_state.next_player != dest_square.player \
+    and game_state.next_player == chessman.player:
+    return True
+  return False
