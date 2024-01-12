@@ -2,6 +2,7 @@ from dljungle.jungleTypes import Player
 from dljungle.agent.base import Agent
 from dljungle.agent.naive import RandomBot
 from dljungle.utils import print_board, print_move
+from dljungle.agent.helpers import home_is_safe
 import random
 import math
 
@@ -12,6 +13,12 @@ __all__ = [
 def uct_score(parent_rollouts, child_rollouts, win_pct, temperature):
   exploration = math.sqrt(math.log(parent_rollouts) / child_rollouts)
   return win_pct + temperature * exploration
+
+def get_good_moves(game_state):
+  if home_is_safe(game_state):
+    dumb_move = "bot" if game_state.next_player == Player.GREEN else "top"
+    return list(filter(lambda c: c.direction != dumb_move, game_state.legal_moves))
+  return game_state.legal_moves
 
 class MCTSNode:
   def __init__(self, game_state, parent=None, move=None):
@@ -24,7 +31,7 @@ class MCTSNode:
       Player.RED: 0
     }
     self.num_rollouts = 0
-    self.unvisited_moves = game_state.legal_moves
+    self.unvisited_moves = get_good_moves(game_state)
 
   def add_random_child(self):
     index = random.randint(0, len(self.unvisited_moves) - 1)
