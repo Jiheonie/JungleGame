@@ -17,9 +17,10 @@ def main():
     Player.RED: naive.RandomBot(),
   }
 
+  step = 0
   while not game.is_over():
     # time.sleep(0.3)
-
+    print(step)
     # print(chr(27) + "[2J")
     print("---------------------------------------")
     bot_move = bots[game.next_player].select_move(game)
@@ -27,6 +28,7 @@ def main():
       print_board(game.board)
       print_move(game.next_player, bot_move)
       game = game.apply_move(bot_move)
+    step += 1
       
   print(game.winner)
 

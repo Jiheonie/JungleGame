@@ -1,4 +1,4 @@
-from dljungle.jungleTypes import Square, Point, ChessType, Area
+from dljungle.jungleTypes import Square, Point, ChessType, Area, Player
 
 def is_move_valid(player, board, prev_square, direction):
   # correct chessman
@@ -48,3 +48,21 @@ def is_winning_move(game_state, square, direction):
     and game_state.next_player == chessman.player:
     return True
   return False
+
+def home_is_safe(game_state) -> bool:
+  board = game_state.board
+  if game_state.next_player == Player.GREEN:
+    for r in range(1, 4):
+      for c in range(1, board.num_cols + 1):
+        chessman = board.get_chess_by_point(Point(r, c))
+        if chessman and chessman.player == Player.RED:
+          return False
+    return True
+
+  else:
+    for r in range(board.num_rows - 2, board.num_rows + 1):
+      for c in range(1, board.num_cols + 1):
+        chessman = board.get_chess_by_point(Point(r, c))
+        if chessman and chessman.player == Player.GREEN:
+          return False
+    return True

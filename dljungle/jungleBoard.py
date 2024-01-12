@@ -46,6 +46,10 @@ class Board():
       if key.point == point:
         return key
     return None
+
+  def get_chess_by_point(self, point):
+    square = self.get_key_by_point(point)
+    return self._grid.get(square)
   
   def get_chess_by_square(self, prev_square_raw):
     prev_square = self.get_key_by_point(prev_square_raw.point)

@@ -1,18 +1,14 @@
 import random
 from dljungle.agent.base import Agent
-from dljungle.agent.helpers import is_move_valid
+from dljungle.agent.helpers import is_move_valid, home_is_safe
 from dljungle.jungleBoard import Move
+from dljungle.jungleTypes import Player
 
 class RandomBot(Agent):  
   def find_winning_move(self, game_state):
     if len(game_state.winning_moves) > 0:
       return random.choice(game_state.winning_moves)
     return None
-    # for candidate in game_state.legal_moves:
-    #   next_state = game_state.apply_move(candidate)
-    #   if next_state.is_over() and next_state.winner == game_state.next_player:
-    #     return candidate
-    # return None
   
   def eliminate_losing_moves(self, game_state):
     possible_moves = []
@@ -41,4 +37,7 @@ class RandomBot(Agent):
     if two_step_win and two_step_win in candidates:
       print(two_step_win)
       return two_step_win
+    if home_is_safe(game_state):
+      dumb_move = "bot" if game_state.next_player == Player.GREEN else "top"
+      candidates = list(filter(lambda c: c.direction != dumb_move, candidates))
     return random.choice(candidates)

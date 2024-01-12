@@ -29,6 +29,7 @@ class MCTSNode:
   def add_random_child(self):
     index = random.randint(0, len(self.unvisited_moves) - 1)
     new_move = self.unvisited_moves.pop(index)
+    print("Unvisited Move: " + str(len(self.unvisited_moves)))
     new_game_state = self.game_state.apply_move(new_move)
     new_node = MCTSNode(new_game_state, self, new_move)
     self.children.append(new_node)
@@ -57,7 +58,7 @@ class MCTSAgent(Agent):
   def select_move(self, game_state):
     root = MCTSNode(game_state)
 
-    for i in range(self.num_rounds):
+    for _ in range(self.num_rounds):
       node = root
       while (not node.can_add_child()) and (not node.is_terminal()):
         node = self.select_child(node)
@@ -91,7 +92,6 @@ class MCTSAgent(Agent):
   
   def select_child(self, node):
     total_rollouts = sum(child.num_rollouts for child in node.children)
-
     best_score = -1
     best_child = None
     for child in node.children:
@@ -102,7 +102,7 @@ class MCTSAgent(Agent):
         self.temperature
       )
       if score > best_score:
-        best_score = uct_score
+        best_score = score
         best_child = child
 
     return best_child
