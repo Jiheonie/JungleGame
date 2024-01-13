@@ -12,7 +12,7 @@ python human_v_bot.py
 
 Run Monte-Carlo Tree Search mode:
 ```
-python bot_v_bot_mect.py
+python bot_v_bot_mcts.py
 ```
 
 Chess properties in ***dljungle/jungleTypes.py***
