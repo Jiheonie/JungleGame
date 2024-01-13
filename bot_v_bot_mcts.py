@@ -14,7 +14,7 @@ def main():
 
   print_board(board)
 
-  num_rounds = 100
+  num_rounds = 50
         
   bots = {
     Player.GREEN: MCTSAgent(num_rounds, temperature=1.4),
@@ -73,7 +73,7 @@ def main():
 
   json_object = json.dumps(data, indent=4)
 
-  with open(f"data_{num_rounds}.json", "w") as outfile:
+  with open("data_102.json", "w") as outfile:
     outfile.write(json_object)
 
 if __name__ == '__main__':

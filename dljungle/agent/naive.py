@@ -31,13 +31,13 @@ class RandomBot(Agent):
     if self.find_winning_move(game_state):
       return self.find_winning_move(game_state)
     candidates = self.eliminate_losing_moves(game_state)
+    if home_is_safe(game_state):
+      dumb_move = "bot" if game_state.next_player == Player.GREEN else "top"
+      candidates = list(filter(lambda c: c.direction != dumb_move, candidates))
     if len(candidates) == 0:
       return Move.resign()
     two_step_win = self.find_two_step_win(game_state)
     if two_step_win and two_step_win in candidates:
       print(two_step_win)
       return two_step_win
-    if home_is_safe(game_state):
-      dumb_move = "bot" if game_state.next_player == Player.GREEN else "top"
-      candidates = list(filter(lambda c: c.direction != dumb_move, candidates))
     return random.choice(candidates)

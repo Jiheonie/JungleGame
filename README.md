@@ -10,4 +10,13 @@ Run human-v-bot mode:
 python human_v_bot.py
 ```
 
-Config Monte-Carlo Tree Search in ***dljungle/agent/mcts.py***
+Run Monte-Carlo Tree Search mode:
+```
+python bot_v_bot_mect.py
+```
+
+Chess properties in ***dljungle/jungleTypes.py***
+
+Board properties in ***dljungle/jungleBoard.py***
+
+Move Policies in ***dljungle/agent/helpers.py***
