@@ -45,7 +45,7 @@ def main():
         if chessman:
           init["state"][f"{r}-{c}"] = {
             "player": "red" if chessman.player == Player.RED else "green",
-            "chesstype": chessman.lost_power,
+            "chesstype": chessman.lost_power.value,
           }
         else:
           init["state"][f"{r}-{c}"] = {}
@@ -73,7 +73,7 @@ def main():
 
   json_object = json.dumps(data, indent=4)
 
-  with open("data_102.json", "w") as outfile:
+  with open("data_107.json", "w") as outfile:
     outfile.write(json_object)
 
 if __name__ == '__main__':

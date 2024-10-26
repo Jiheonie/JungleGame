@@ -127,11 +127,13 @@ class GameState():
     return self.__dict__ == __value.__dict__
 
   def apply_move(self, move):
+    # print(0)
     if move.is_play:
       next_board = copy.deepcopy(self.board)
       next_board.place_chessman(self.next_player, move.prev_square, move.direction)
     else:
       next_board = self.board
+    # print(1)
     return GameState(next_board, self.next_player.other, self, move)
 
   def get_legal_moves(self):
@@ -144,7 +146,7 @@ class GameState():
         if is_move_valid(self.next_player, self.board, square, direction):
           candidates.append(Move.play(candidate[0], candidate[1]))
           if is_winning_move(self, candidate[0], candidate[1]):
-            self.winning_moves.append(candidate)
+            self.winning_moves.append(Move.play(candidate[0], candidate[1]))
     return candidates
   
   @classmethod

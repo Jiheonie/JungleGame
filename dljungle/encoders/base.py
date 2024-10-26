@@ -24,4 +24,4 @@ def get_encoder_by_name(name):
   board_size = (9, 7)
   module = importlib.import_module('dljungle.encoders.' + name)
   constructor = getattr(module, 'create')
-  return constructor(board_size)
+  return constructor()

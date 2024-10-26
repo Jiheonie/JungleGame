@@ -65,7 +65,8 @@ class MCTSAgent(Agent):
   def select_move(self, game_state):
     root = MCTSNode(game_state)
 
-    for _ in range(self.num_rounds):
+    for i in range(self.num_rounds):
+      print(f'Round: {i}')
       node = root
       while (not node.can_add_child()) and (not node.is_terminal()):
         node = self.select_child(node)
@@ -73,6 +74,7 @@ class MCTSAgent(Agent):
       if node.can_add_child():
         node = node.add_random_child()
 
+      # simulate full game trên node này luôn sao? 
       winner = self.simulate_random_game(node.game_state)
 
       while node is not None:
@@ -85,7 +87,7 @@ class MCTSAgent(Agent):
     ]
     scored_moves.sort(key=lambda x: x[0], reverse=True)
     for s, m, n in scored_moves[:10]:
-      print('%s - %.3f (%d)' % (m, s, n))
+      print('%s go %s - %.3f (%d)' % (m.prev_square.point, m.direction, s, n))
 
     best_move = None
     best_pct = -1.0
@@ -94,7 +96,7 @@ class MCTSAgent(Agent):
       if child_pct > best_pct:
         best_pct = child_pct
         best_move = child.move
-    print('Select move %s with win pct %3f' % (best_move, best_pct))
+    print('Select move at %s go %s with win pct %3f' % (best_move.prev_square.point, best_move.direction, best_pct))
     return best_move
   
   def select_child(self, node):
@@ -122,6 +124,5 @@ class MCTSAgent(Agent):
     }
     while not game.is_over():
       bot_move = bots[game.next_player].select_move(game)
-      if bot_move:
-        game = game.apply_move(bot_move)
+      game = game.apply_move(bot_move)
     return game.winner
