@@ -50,8 +50,6 @@ def main():
   parser.add_argument('--move-out')
 
   args = parser.parse_args()
-  # xs = []
-  # ys = []
 
   try:
     xs = np.load(args.board_out).tolist()
@@ -79,8 +77,12 @@ def main():
       print('Generating game %d/%d...' % (i + 1, args.num_games))
       x, y = generate_game(args.rounds, args.max_moves, args.temperature)
 
-      xs = np.concatenate((xs, x))
-      ys = np.concatenate((ys, y))
+      if len(xs) == 0:
+        xs = x
+        ys = y
+      else:
+        xs = np.concatenate((xs, x))
+        ys = np.concatenate((ys, y))
 
       np.save(args.board_out, xs)
       np.save(args.move_out, ys)
