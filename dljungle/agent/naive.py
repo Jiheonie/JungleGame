@@ -11,15 +11,6 @@ class RandomBot(Agent):
     return None
   
   def eliminate_losing_moves(self, game_state):
-    # print("eliminate____")
-    # possible_moves = []
-    # for candidate in game_state.legal_moves:
-    #   next_state = game_state.apply_move(candidate)
-    #   opponent_winning_move = self.find_winning_move(next_state)
-    #   if opponent_winning_move is None:
-    #     possible_moves.append(candidate)
-    # return possible_moves
-
     is_checkmate = False
 
     if game_state.next_player == Player.GREEN:
@@ -106,13 +97,6 @@ class RandomBot(Agent):
 
 
   def find_two_step_win(self, game_state):
-    # for candidate in game_state.legal_moves:
-    #   next_state = game_state.apply_move(candidate)
-    #   good_responses = self.eliminate_losing_moves(next_state)
-    #   if len(good_responses) == 0:
-    #     return candidate
-    # return None
-
     check_moves = []
   
     if game_state.next_player == Player.RED:
@@ -178,7 +162,9 @@ class RandomBot(Agent):
     if len(candidates) == 0:
       return Move.resign()
     two_step_win = self.find_two_step_win(game_state)
-    if two_step_win and two_step_win in candidates:
-      print(str(two_step_win.prev_square.point) + " " + two_step_win.direction)
-      return two_step_win    
+    if two_step_win:
+      for c in candidates:
+        if c.prev_square.point == two_step_win.prev_square.point and c.direction == two_step_win.direction:
+          print("Check: " + str(two_step_win.prev_square.point) + " " + two_step_win.direction)
+          return two_step_win
     return random.choice(candidates)

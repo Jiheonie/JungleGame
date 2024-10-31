@@ -1,7 +1,7 @@
 import numpy as np
 
 from dljungle.encoders.base import Encoder
-from dljungle.jungleTypes import Point, Player
+from dljungle.jungleTypes import Point, Player, ChessType
 
 class OnePlaneEncoder(Encoder):
   def __init__(self):
@@ -24,7 +24,7 @@ class OnePlaneEncoder(Encoder):
         chess = game_state.board.get_chess_by_point(Point(r + 1, c + 1))
         if chess == None:
           continue
-        board_matrix[0, r, c, 3] = chess.chesstype.value
+        board_matrix[0, r, c, 3] = chess.chesstype.value if isinstance(chess.chesstype, ChessType) else 0
         board_matrix[0, r, c, 4] = chess.lost_power.value
         if chess.player == next_player:
           board_matrix[0, r, c, 2] = 1

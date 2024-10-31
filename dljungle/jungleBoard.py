@@ -156,6 +156,9 @@ class GameState():
   def is_over(self):
     if self.last_move is None:
       return False
+    if len(self.legal_moves) == 0:
+      self.winner = self.next_player.other
+      return True
     if self.last_move.is_resign:
       self.winner = self.next_player  
       return True

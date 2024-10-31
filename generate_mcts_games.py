@@ -24,11 +24,25 @@ def generate_game(rounds, max_moves, temperature):
     if move.is_play:
       boards.append(encoder.encode(game))
 
-      move_one_hot = np.zeros((2, encoder.num_points()))
-      move_one_hot[0, encoder.encode_point(move.prev_square.point)] = 1
-      dest_square = game.board.get_dest_square(move.prev_square, move.direction)
-      move_one_hot[1, encoder.encode_point(dest_square.point)] = 1
-      moves.append(move_one_hot)
+      # move_one_hot = np.zeros((2, encoder.num_points()))
+      # move_one_hot[0, encoder.encode_point(move.prev_square.point)] = 1
+      # dest_square = game.board.get_dest_square(move.prev_square, move.direction)
+      # move_one_hot[1, encoder.encode_point(dest_square.point)] = 1
+      # moves.append(move_one_hot)
+
+      move_labels = np.zeros((encoder.num_points(), 4))
+      label_x = encoder.encode_point(move.prev_square.point)
+      label_y = 0
+      if move.direction == "top":
+        label_y = 0
+      elif move.direction == "right":
+        label_y = 1
+      elif move.direction == "bot":
+        label_y = 2
+      else:
+        label_y = 3
+      move_labels[label_x, label_y] = 1
+      moves.append(move_labels)
 
     print_move(game.next_player, move)
     game = game.apply_move(move)
@@ -63,7 +77,7 @@ def main():
     
 
   for i in range(args.num_games):
-    try:
+    # try:
       try:
         xs = np.load(args.board_out).tolist()
       except FileNotFoundError:
@@ -89,8 +103,8 @@ def main():
 
       print("Save game Successful!")
 
-    except Exception as e:
-      print(f"Some error when saving: {e}")
+    # except Exception as e:
+    #   print(f"Some error when saving: {e}")
 
 if __name__ == '__main__':
   main()

@@ -38,6 +38,11 @@ class Point(namedtuple('Point', 'row col')):
       "right": Point(self.row, self.col + 1),
     }
   
+  def __eq__(self, other) -> bool:
+    if isinstance(other, Point):
+      return self.row == other.row and self.col == other.col
+    return False
+  
 
 class Square():
   lst = []

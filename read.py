@@ -1,9 +1,10 @@
 import numpy as np
 
-features = np.load('labels10000.npy')
+features = np.load('labels12000.npy')
 
 # for _ in range(1000):
 #   print(0)
 #   print(1)
 
-print(features)
+print(len(features))
+print(features[13])
