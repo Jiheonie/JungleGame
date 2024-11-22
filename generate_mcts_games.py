@@ -65,19 +65,11 @@ def main():
 
   args = parser.parse_args()
 
-  try:
-    xs = np.load(args.board_out).tolist()
-  except FileNotFoundError:
-    xs = []
-
-  try:
-    ys = np.load(args.move_out).tolist()
-  except FileNotFoundError:
-    ys = []
-    
-
   for i in range(args.num_games):
-    # try:
+      print('Generating game %d/%d...' % (i + 1, args.num_games))
+      x, y = generate_game(args.rounds, args.max_moves, args.temperature)
+
+      
       try:
         xs = np.load(args.board_out).tolist()
       except FileNotFoundError:
@@ -88,8 +80,7 @@ def main():
       except FileNotFoundError:
         ys = []
         
-      print('Generating game %d/%d...' % (i + 1, args.num_games))
-      x, y = generate_game(args.rounds, args.max_moves, args.temperature)
+      
 
       if len(xs) == 0:
         xs = x
